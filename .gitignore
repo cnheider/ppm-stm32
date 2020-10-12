@@ -4,3 +4,5 @@ bin/
 *.d
 generated.*.ld
 compile_commands.json
+
+.idea/

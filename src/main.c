@@ -120,28 +120,28 @@ static void adc_setup(void) {
     TIM3_ARR = 10000 - 1;
 
     DMA1_CCR1 = DMA_CCR_MSIZE_16BIT | DMA_CCR_PSIZE_16BIT |
-        DMA_CCR_MINC | DMA_CCR_CIRC | DMA_CCR_PL_HIGH;
-    DMA1_CMAR1 = (uint32_t)adc_channels;
-    DMA1_CPAR1 = (uint32_t)&ADC1_DR;
+                DMA_CCR_MINC | DMA_CCR_CIRC | DMA_CCR_PL_HIGH;
+    DMA1_CMAR1 = (uint32_t) adc_channels;
+    DMA1_CPAR1 = (uint32_t) & ADC1_DR;
     DMA1_CNDTR1 = ADC_CHANNEL_NUM;
 
     ADC1_CR1 = ADC_CR1_SCAN | ADC_CR1_DISCNUM_4CHANNELS;
     ADC1_CR2 = ADC_CR2_EXTTRIG | ADC_CR2_EXTSEL_TIM3_TRGO |
-        ADC_CR2_DMA;
+               ADC_CR2_DMA;
     ADC1_SQR1 = (ADC_CHANNEL_NUM - 1) << ADC_SQR1_L_LSB;
     ADC1_SQR2 = 0;
     ADC1_SQR3 = (4 << ADC_SQR3_SQ1_LSB) | (5 << ADC_SQR3_SQ2_LSB);
     ADC1_SMPR2 = (ADC_SAMPLETIME << ADC_SMPR2_SMP0_LSB) |
-        (ADC_SAMPLETIME << ADC_SMPR2_SMP1_LSB);
+                 (ADC_SAMPLETIME << ADC_SMPR2_SMP1_LSB);
 
     ADC1_CR2 |= ADC_CR2_ADON;
 
     // wait a little
-    for (int i = 0; i < 0xff; i++) ;
+    for (int i = 0; i < 0xff; i++);
 
     // calibrate ADC
     ADC1_CR2 |= ADC_CR2_CAL;
-    while (ADC1_CR2 & ADC_CR2_CAL) ;
+    while (ADC1_CR2 & ADC_CR2_CAL);
 
     // enable
     DMA1_CCR1 |= DMA_CCR_EN;
@@ -156,65 +156,65 @@ static void adc_setup(void) {
 static usbd_device *usbd_dev;
 
 const struct usb_device_descriptor dev_descr = {
-    .bLength = USB_DT_DEVICE_SIZE,
-    .bDescriptorType = USB_DT_DEVICE,
-    .bcdUSB = 0x0200,
-    .bDeviceClass = 0,
-    .bDeviceSubClass = 0,
-    .bDeviceProtocol = 0,
-    .bMaxPacketSize0 = 64,
-    .idVendor = 0x0483,
-    .idProduct = 0x5710,
-    .bcdDevice = 0x0200,
-    .iManufacturer = 1,
-    .iProduct = 2,
-    .iSerialNumber = 3,
-    .bNumConfigurations = 1,
+        .bLength = USB_DT_DEVICE_SIZE,
+        .bDescriptorType = USB_DT_DEVICE,
+        .bcdUSB = 0x0200,
+        .bDeviceClass = 0,
+        .bDeviceSubClass = 0,
+        .bDeviceProtocol = 0,
+        .bMaxPacketSize0 = 64,
+        .idVendor = 0x0483,
+        .idProduct = 0x5710,
+        .bcdDevice = 0x0200,
+        .iManufacturer = 1,
+        .iProduct = 2,
+        .iSerialNumber = 3,
+        .bNumConfigurations = 1,
 };
 
 static const uint8_t hid_report_descriptor[] = {
-    0x05, 0x01, // USAGE_PAGE (Generic Desktop)
-    0x09, 0x04, // USAGE (Joystick)
+        0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+        0x09, 0x04, // USAGE (Joystick)
 
-    0xa1, 0x01, // COLLECTION (Application)
-    0xa1, 0x00, // COLLECTION (Physical)
+        0xa1, 0x01, // COLLECTION (Application)
+        0xa1, 0x00, // COLLECTION (Physical)
 
-    0x05, 0x09, // USAGE_PAGE (Button)
-    0x19, 1,    // USAGE_MINIMUM (Button 1)
-    0x29, 8,    // USAGE_MAXIMUM (Button 8)
-    0x15, 0x00, // LOGICAL_MINIMUM (0)
-    0x25, 0x01, // LOGICAL_MAXIMUM (1)
-    0x95, 8,    // REPORT_COUNT (8)
-    0x75, 0x01, // REPORT_SIZE (1)
-    0x81, 0x02, // INPUT (Data,Var,Abs)
+        0x05, 0x09, // USAGE_PAGE (Button)
+        0x19, 1,    // USAGE_MINIMUM (Button 1)
+        0x29, 8,    // USAGE_MAXIMUM (Button 8)
+        0x15, 0x00, // LOGICAL_MINIMUM (0)
+        0x25, 0x01, // LOGICAL_MAXIMUM (1)
+        0x95, 8,    // REPORT_COUNT (8)
+        0x75, 0x01, // REPORT_SIZE (1)
+        0x81, 0x02, // INPUT (Data,Var,Abs)
 
-    0x05, 0x01, // USAGE_PAGE (Generic Desktop)
-    0xA1, 0x00, // Collection ()
-    0x15, 0x00, // LOGICAL_MINIMUM (0)
-    0x26, 0xff, 0x0f, // LOGICAL_MAXIMUM
+        0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+        0xA1, 0x00, // Collection ()
+        0x15, 0x00, // LOGICAL_MINIMUM (0)
+        0x26, 0xff, 0x0f, // LOGICAL_MAXIMUM
 
-    0x75, 16, // REPORT_SIZE 16
-    0x95, 10, // REPORT_COUNT
+        0x75, 16, // REPORT_SIZE 16
+        0x95, 10, // REPORT_COUNT
 
-    0x09, 0x30, // USAGE (X)
-    0x09, 0x31, // USAGE (Y)
-    0x09, 0x32, // USAGE (Z)
-    0x09, 0x33, // USAGE (Rx)
+        0x09, 0x30, // USAGE (X)
+        0x09, 0x31, // USAGE (Y)
+        0x09, 0x32, // USAGE (Z)
+        0x09, 0x33, // USAGE (Rx)
 
-    0x09, 0x34, // USAGE (Ry)
-    0x09, 0x35, // USAGE (Rz)
-    0x09, 0x36, // USAGE (Slider)
-    0x09, 0x37, // USAGE (Dial)
+        0x09, 0x34, // USAGE (Ry)
+        0x09, 0x35, // USAGE (Rz)
+        0x09, 0x36, // USAGE (Slider)
+        0x09, 0x37, // USAGE (Dial)
 
-    0x09, 0x38, // USAGE (Wheel)
-    0x09, 0x40, // USAGE (Vx)
+        0x09, 0x38, // USAGE (Wheel)
+        0x09, 0x40, // USAGE (Vx)
 
-    0x81, 0x02, // INPUT (Data,Var,Abs)
+        0x81, 0x02, // INPUT (Data,Var,Abs)
 
-    0xc0, // END_COLLECTION
+        0xc0, // END_COLLECTION
 
-    0xc0, // END_COLLECTION
-    0xc0 // END_COLLECTION
+        0xc0, // END_COLLECTION
+        0xc0 // END_COLLECTION
 };
 
 
@@ -225,89 +225,89 @@ static const struct {
         uint16_t wDescriptorLength;
     } __attribute__((packed)) hid_report;
 } __attribute__((packed)) hid_function = {
-    .hid_descriptor = {
-        .bLength = sizeof(hid_function),
-        .bDescriptorType = USB_DT_HID,
-        .bcdHID = 0x0111,
-        .bCountryCode = 0,
-        .bNumDescriptors = 1,
-    },
-    .hid_report = {
-        .bReportDescriptorType = USB_DT_REPORT,
-        .wDescriptorLength = sizeof(hid_report_descriptor),
-    }
+        .hid_descriptor = {
+                .bLength = sizeof(hid_function),
+                .bDescriptorType = USB_DT_HID,
+                .bcdHID = 0x0111,
+                .bCountryCode = 0,
+                .bNumDescriptors = 1,
+        },
+        .hid_report = {
+                .bReportDescriptorType = USB_DT_REPORT,
+                .wDescriptorLength = sizeof(hid_report_descriptor),
+        }
 };
 
 
 const struct usb_endpoint_descriptor hid_endpoint = {
-    .bLength = USB_DT_ENDPOINT_SIZE,
-    .bDescriptorType = USB_DT_ENDPOINT,
-    .bEndpointAddress = 0x81,
-    .bmAttributes = USB_ENDPOINT_ATTR_INTERRUPT,
-    .wMaxPacketSize = HID_EP_LENGTH,
-    .bInterval = 10,
+        .bLength = USB_DT_ENDPOINT_SIZE,
+        .bDescriptorType = USB_DT_ENDPOINT,
+        .bEndpointAddress = 0x81,
+        .bmAttributes = USB_ENDPOINT_ATTR_INTERRUPT,
+        .wMaxPacketSize = HID_EP_LENGTH,
+        .bInterval = 10,
 };
 
 const struct usb_interface_descriptor hid_iface = {
-    .bLength = USB_DT_INTERFACE_SIZE,
-    .bDescriptorType = USB_DT_INTERFACE,
-    .bInterfaceNumber = 0,
-    .bAlternateSetting = 0,
-    .bNumEndpoints = 1,
-    .bInterfaceClass = USB_CLASS_HID,
-    .bInterfaceSubClass = 0,
-    .bInterfaceProtocol = 0,
-    .iInterface = 0,
+        .bLength = USB_DT_INTERFACE_SIZE,
+        .bDescriptorType = USB_DT_INTERFACE,
+        .bInterfaceNumber = 0,
+        .bAlternateSetting = 0,
+        .bNumEndpoints = 1,
+        .bInterfaceClass = USB_CLASS_HID,
+        .bInterfaceSubClass = 0,
+        .bInterfaceProtocol = 0,
+        .iInterface = 0,
 
-    .endpoint = &hid_endpoint,
+        .endpoint = &hid_endpoint,
 
-    .extra = &hid_function,
-    .extralen = sizeof(hid_function),
+        .extra = &hid_function,
+        .extralen = sizeof(hid_function),
 };
 
 
 const struct usb_interface ifaces[] = {{
-        .num_altsetting = 1,
-        .altsetting = &hid_iface,
-    }};
+                                               .num_altsetting = 1,
+                                               .altsetting = &hid_iface,
+                                       }};
 
 
 const struct usb_config_descriptor config = {
-    .bLength = USB_DT_CONFIGURATION_SIZE,
-    .bDescriptorType = USB_DT_CONFIGURATION,
-    .wTotalLength = 0,
-    .bNumInterfaces = 1,
-    .bConfigurationValue = 1,
-    .iConfiguration = 0,
-    .bmAttributes = 0x80,
-    .bMaxPower = 0x32,
+        .bLength = USB_DT_CONFIGURATION_SIZE,
+        .bDescriptorType = USB_DT_CONFIGURATION,
+        .wTotalLength = 0,
+        .bNumInterfaces = 1,
+        .bConfigurationValue = 1,
+        .iConfiguration = 0,
+        .bmAttributes = 0x80,
+        .bMaxPower = 0x32,
 
-    .interface = ifaces,
+        .interface = ifaces,
 };
 
 
 static const char *usb_strings[] = {
-    "Ducktronics Inc.",
-    "PPM to Joystick Interface",
-    "000001",
+        "Ducktronics Inc.",
+        "PPM to Joystick Interface",
+        "000001",
 };
 
 /* Buffer to be used for control requests. */
 uint8_t usbd_control_buffer[128];
 
 static enum usbd_request_return_codes hid_control_request(
-    usbd_device *dev, struct usb_setup_data *req, uint8_t **buf, uint16_t *len,
-    void (**complete)(usbd_device *, struct usb_setup_data *)) {
-    (void)complete;
-    (void)dev;
+        usbd_device *dev, struct usb_setup_data *req, uint8_t **buf, uint16_t *len,
+        void (**complete)(usbd_device *, struct usb_setup_data *)) {
+    (void) complete;
+    (void) dev;
 
-    if((req->bmRequestType != 0x81) ||
-       (req->bRequest != USB_REQ_GET_DESCRIPTOR) ||
-       (req->wValue != 0x2200))
+    if ((req->bmRequestType != 0x81) ||
+        (req->bRequest != USB_REQ_GET_DESCRIPTOR) ||
+        (req->wValue != 0x2200))
         return USBD_REQ_NOTSUPP;
 
     // Handle the HID report descriptor.
-    *buf = (uint8_t *)hid_report_descriptor;
+    *buf = (uint8_t *) hid_report_descriptor;
     *len = sizeof(hid_report_descriptor);
 
     return USBD_REQ_HANDLED;
@@ -315,16 +315,16 @@ static enum usbd_request_return_codes hid_control_request(
 
 
 static void hid_set_config(usbd_device *dev, uint16_t wValue) {
-    (void)wValue;
-    (void)dev;
+    (void) wValue;
+    (void) dev;
 
     usbd_ep_setup(dev, 0x81, USB_ENDPOINT_ATTR_INTERRUPT, HID_EP_LENGTH, 0);
 
     usbd_register_control_callback(
-        dev,
-        USB_REQ_TYPE_STANDARD | USB_REQ_TYPE_INTERFACE,
-        USB_REQ_TYPE_TYPE | USB_REQ_TYPE_RECIPIENT,
-        hid_control_request);
+            dev,
+            USB_REQ_TYPE_STANDARD | USB_REQ_TYPE_INTERFACE,
+            USB_REQ_TYPE_TYPE | USB_REQ_TYPE_RECIPIENT,
+            hid_control_request);
 
     TIM4_CR1 |= TIM_CR1_CEN;
 }
@@ -346,7 +346,7 @@ void tim4_isr() {
         TIM4_SR &= ~TIM_SR_UIF;
 
         uint8_t buf[HID_EP_LENGTH];
-        for (int i = 0 ; i < HID_EP_LENGTH; i++) {
+        for (int i = 0; i < HID_EP_LENGTH; i++) {
             buf[i] = 0;
         }
 
@@ -355,8 +355,8 @@ void tim4_isr() {
         // ppm channels
         for (int i = 0; i < NUM_CHANNELS; i++) {
             uint16_t val = ch_values[i] - MS_TO_TICKS(0.5);
-            buf[(i*2)+1] = val & 0xff;
-            buf[(i*2)+2] = val >> 8;
+            buf[(i * 2) + 1] = val & 0xff;
+            buf[(i * 2) + 2] = val >> 8;
         }
         // adc channels
         for (int i = 0; i < ADC_CHANNEL_NUM; i++) {
@@ -364,7 +364,7 @@ void tim4_isr() {
             buf[(i * 2) + 1 + (NUM_CHANNELS * 2) + 1] = adc_channels[i] >> 8;
         }
 
-        usbd_ep_write_packet(usbd_dev, 0x81, (uint8_t *)buf, sizeof(buf));
+        usbd_ep_write_packet(usbd_dev, 0x81, (uint8_t *) buf, sizeof(buf));
     }
 }
 
@@ -407,7 +407,8 @@ int main(void) {
         __asm__("nop");
     }
 
-    usbd_dev = usbd_init(&st_usbfs_v1_usb_driver, &dev_descr, &config, usb_strings, 3, usbd_control_buffer, sizeof(usbd_control_buffer));
+    usbd_dev = usbd_init(&st_usbfs_v1_usb_driver, &dev_descr, &config, usb_strings, 3, usbd_control_buffer,
+                         sizeof(usbd_control_buffer));
     usbd_register_set_config_callback(usbd_dev, hid_set_config);
 
     while (1) {
